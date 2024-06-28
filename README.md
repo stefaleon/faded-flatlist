@@ -1,50 +1,61 @@
-# Welcome to your Expo app 👋
+https://jainsameer.medium.com/react-native-faded-flatlist-over-background-image-9651f38ad31c
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+ # React Native faded FlatList over Background Image
 
-## Get started
+## How to create a faded list of messages like Instagram?
 
-1. Install dependencies
+In this image, you will notice a flat list that is transparent and have a fade effect on the top and bottom. In this article, we will try to achieve the same effect in React Native. For this, we will need 4 components:
 
-   ```bash
-   npm install
-   ```
+1. FlatList
+2. Gradient view which has transparent edges on the top and bottom
+3. Masked View which will use gradient view to mask the flat list
+4. A Background Image of your choice
 
-2. Start the app
+FlatList and BackgroundImage component is already part of the React Native library. We will need a couple of third-party modules for gradient view and masked view.
 
-   ```bash
-    npx expo start
-   ```
+Let us start by creating a fresh new react native project and setting up the above components.
 
-In the output, you'll find options to open the app in a
+# Install Dependencies
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+After the project is created and we need to install the following dependencies:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. @react-native-community/masked-view — This module provides a way to mask any component with a given element.
+2. react-native-linear-gradient — This module will be used to create a view that has transparent edges on the top and bottom
 
-## Get a fresh project
+You can install them in a single command like
 
-When you're ready, run:
+npm i — save @react-native-community/masked-view react-native-linear-gradient
 
-```bash
-npm run reset-project
-```
+Let’s start setting up our flat list, masked element, and then put everything together.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+# Create FlatList
 
-## Learn more
+Create a FlatList with some random data. I generated sentences from [https://randomwordgenerator.com/sentence.php.](https://randomwordgenerator.com/sentence.php.) They are pretty good at this when you need some fake sentences.
 
-To learn more about developing your project with Expo, look at the following resources:
+# Create a gradient view
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+For creating a gradient view we will be using the LinearGradient module. The view will be used by the MaskedView module to put a mask on its children. We will need to provide a gradient that has transparency on the top and bottom but is solid in the middle. Here is how I did it:
 
-## Join the community
+You will notice that I have used a color array for linear-gradient like \[‘#FFFFFF00’, ‘#FFFFFF’, ‘#FFFFFF00’\] where the first and last elements are [RGBA](https://en.wikipedia.org/wiki/RGBA_color_model) and the middle one is RGB. RGBA will be fully opaque and RGB will be solid. This will create a View with transparency at the top and bottom and a solid white color in middle. It doesn't matter if you use different colors but the top and bottom must be fully opaque so use RGBA.
 
-Join our community of developers creating universal apps.
+# Create a Masked View
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Now we have set up both components we will look into creating a masked view. A masked view is a component that accepts a masked element and children. The masked element is the view used to define masking over the children. We can set this up in a way so we can have a reusable component that can be used for different purposes.
+
+Above is a simple functional component that accepts 2 props, _element and children,_ and then feeds the same to MaskedView.
+
+So far we have created 3 components, a flat list, a gradient view, and a masked view. They have their own purpose. A flat list to display messages, the gradient view will be used for masking and the masked view will use both of them to create a faded effect. Now let's put everything together to get the desired effect
+
+# Final Component
+
+Now we have our masked view setup, let's put everything together under a background image.
+
+This will give the desired result. Here is how it looks on my phone.
+
+![](https://miro.medium.com/v2/resize:fit:800/1*iGQICmwcb0GcNq6SaHrTYQ.png)
+
+# Conclusion
+
+We can use the gradient view as a mask element for MaskedView to create a faded effect.
+
+You can play with it or if you have any questions please let me know.
